@@ -15,8 +15,9 @@ int main(void)
 	SystemConfigClk();
 	GPIO_Init();
     UART2_Init();
+    TIM2_Init();
+    TIM4_Init();
     SSD1306_Init();
-
 
     memset(msg,0,sizeof(msg));
 	sprintf(msg,"SYSCLK : %ldHz\r\n",HAL_RCC_GetSysClockFreq());
@@ -61,10 +62,8 @@ void SystemConfigClk()
     	Error_handler();
     }
 
-
     osc_init.PLL.PLLState = RCC_PLL_ON;
     osc_init.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-
 
     // SYS_CLOCK PLL
 	osc_init.PLL.PLLM = 8;

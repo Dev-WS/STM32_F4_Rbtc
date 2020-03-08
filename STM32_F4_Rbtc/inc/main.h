@@ -19,5 +19,8 @@ I2C_HandleTypeDef hi2c1;
 GPIO_InitTypeDef gpio;
 RCC_OscInitTypeDef osc_init = {0};
 RCC_ClkInitTypeDef clk_init = {0};
+TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim4;
+TIM_OC_InitTypeDef oc;
 
 #endif
