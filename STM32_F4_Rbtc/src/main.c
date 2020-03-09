@@ -12,9 +12,10 @@ int main(void)
 	char msg[100];
 
 	HAL_Init();
-	SystemConfigClk();
+//	SystemConfigClk();
 	GPIO_Init();
     UART2_Init();
+    I2C1_Init();
     TIM2_Init();
     TIM4_Init();
     SSD1306_Init();
@@ -35,15 +36,29 @@ int main(void)
 	sprintf(msg,"PCLK2  : %ldHz\r\n\n",HAL_RCC_GetPCLK2Freq());
 	HAL_UART_Transmit(&uart2,(uint8_t*)msg,strlen(msg),HAL_MAX_DELAY);
 
+	int test = 0;
+
 	while(1){
 
-		SSD1306_GotoXY(10,27);
-		SSD1306_Puts("Hello!", &Font_7x10, 1);
+		test++;
+		if (test >= 1000) {
+			SSD1306_GotoXY(10,27);
+			SSD1306_Puts("Hellooo!", &Font_7x10, 1);
+			SSD1306_UpdateScreen();
+			HAL_Delay(100);
+			test = 0;
+		} else
+		{
+			SSD1306_GotoXY(10,27);
+			SSD1306_Puts("Hi!", &Font_7x10, 1);
+			SSD1306_UpdateScreen();
+		}
+
 		SSD1306_GotoXY(10,52);
-		SSD1306_Puts("Test.", &Font_7x10, 1);
+		SSD1306_Puts("Test@53.", &Font_7x10, 1);
 		SSD1306_UpdateScreen(); //display
-		SSD1306_Fill(0x01);
-		HAL_Delay(1000);
+		//SSD1306_Fill(0x01);
+		//HAL_Delay(1000);
 	}
 
 

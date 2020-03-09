@@ -23,8 +23,8 @@ void GPIO_Init()
 	__HAL_RCC_GPIOB_CLK_ENABLE();
 	__HAL_RCC_USART2_CLK_ENABLE();
 	__HAL_RCC_I2C1_CLK_ENABLE();
-	__HAL_RCC_TIM2_CLK_ENABLE();
-	__HAL_RCC_TIM4_CLK_ENABLE();
+//	__HAL_RCC_TIM2_CLK_ENABLE();
+//	__HAL_RCC_TIM4_CLK_ENABLE();
 
 	 gpio.Pin = GPIO_PIN_2;
 	 gpio.Mode =GPIO_MODE_AF_PP;
@@ -45,19 +45,19 @@ void GPIO_Init()
 	 HAL_GPIO_Init(GPIOB, &gpio);
 
 	 	 //TIM2
-	 gpio.Mode = GPIO_MODE_OUTPUT_PP;
-	 gpio.Pin = GPIO_PIN_5;
-	 gpio.Pull = GPIO_NOPULL;
-	 gpio.Speed = GPIO_SPEED_FREQ_LOW;
-	 HAL_GPIO_Init(GPIOA, &gpio);
-
-	 	 //TIM4
-	 GPIO_InitTypeDef gpio;
-	 gpio.Mode = GPIO_MODE_AF_PP;
-	 gpio.Pin = GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9;
-	 gpio.Pull = GPIO_NOPULL;
-	 gpio.Speed = GPIO_SPEED_FREQ_HIGH;
-	 HAL_GPIO_Init(GPIOB, &gpio);
+//	 gpio.Mode = GPIO_MODE_OUTPUT_PP;
+//	 gpio.Pin = GPIO_PIN_5;
+//	 gpio.Pull = GPIO_NOPULL;
+//	 gpio.Speed = GPIO_SPEED_FREQ_LOW;
+//	 HAL_GPIO_Init(GPIOA, &gpio);
+//
+//	 	 //TIM4
+//	 GPIO_InitTypeDef gpio;
+//	 gpio.Mode = GPIO_MODE_AF_PP;
+//	 gpio.Pin = GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9;
+//	 gpio.Pull = GPIO_NOPULL;
+//	 gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+//	 HAL_GPIO_Init(GPIOB, &gpio);
 
 }
 
