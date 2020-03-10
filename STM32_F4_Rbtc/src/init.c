@@ -18,9 +18,9 @@ void Error_handler(void)
 
 void GPIO_Init()
 {
-
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 	__HAL_RCC_GPIOB_CLK_ENABLE();
+	__HAL_RCC_GPIOD_CLK_ENABLE();
 	__HAL_RCC_USART2_CLK_ENABLE();
 	__HAL_RCC_I2C1_CLK_ENABLE();
 //	__HAL_RCC_TIM2_CLK_ENABLE();
@@ -52,12 +52,12 @@ void GPIO_Init()
 //	 HAL_GPIO_Init(GPIOA, &gpio);
 //
 //	 	 //TIM4
-//	 GPIO_InitTypeDef gpio;
-//	 gpio.Mode = GPIO_MODE_AF_PP;
-//	 gpio.Pin = GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9;
-//	 gpio.Pull = GPIO_NOPULL;
-//	 gpio.Speed = GPIO_SPEED_FREQ_HIGH;
-//	 HAL_GPIO_Init(GPIOB, &gpio);
+	 gpio.Pin = GPIO_PIN_12|GPIO_PIN_13;
+	 gpio.Mode = GPIO_MODE_AF_PP;
+	 gpio.Pull = GPIO_NOPULL;
+	 gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+	 gpio.Alternate = GPIO_AF2_TIM4;
+	 HAL_GPIO_Init(GPIOD, &gpio);
 
 }
 
@@ -90,7 +90,11 @@ void I2C1_Init()
 	hi2c1.Init.OwnAddress2 = 0;
 	hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
 	hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-	HAL_I2C_Init(&hi2c1);
+	  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+	  {
+	    Error_handler();
+
+	  }
 }
 
 
@@ -109,7 +113,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 void TIM2_Init()
 {
-
 	htim2.Instance = TIM2;
 	htim2.Init.Prescaler = 8000-1;
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -140,8 +143,16 @@ void TIM4_Init()
 	 oc.OCFastMode = TIM_OCFAST_ENABLE;
 	 oc.OCIdleState = TIM_OCIDLESTATE_SET;
 	 oc.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-	 HAL_TIM_PWM_ConfigChannel(&htim4, &oc, TIM_CHANNEL_1);
-	 HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+
+	 if (HAL_TIM_PWM_ConfigChannel(&htim4, &oc, TIM_CHANNEL_1) != HAL_OK)
+	  {
+	    Error_handler();
+	  }
+
+	 if (HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1) != HAL_OK)
+	  {
+	    Error_handler();
+	  }
 }
 
 //void send_string(char* s)
