@@ -20,6 +20,9 @@ int main(void)
     TIM4_Init();
     SSD1306_Init();
 
+    HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
+    HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);
+
     memset(msg,0,sizeof(msg));
 	sprintf(msg,"SYSCLK : %ldHz\r\n",HAL_RCC_GetSysClockFreq());
 	HAL_UART_Transmit(&uart2,(uint8_t*)msg,strlen(msg),HAL_MAX_DELAY);
@@ -76,8 +79,6 @@ int main(void)
 
 void SystemConfigClk()
 {
-	TIM_OC_InitTypeDef oc;
-
 	RCC_OscInitTypeDef osc_init = {0};
 	RCC_ClkInitTypeDef clk_init = {0};
 

@@ -23,8 +23,8 @@ void GPIO_Init()
 	__HAL_RCC_GPIOD_CLK_ENABLE();
 	__HAL_RCC_USART2_CLK_ENABLE();
 	__HAL_RCC_I2C1_CLK_ENABLE();
-//	__HAL_RCC_TIM2_CLK_ENABLE();
-//	__HAL_RCC_TIM4_CLK_ENABLE();
+	__HAL_RCC_TIM2_CLK_ENABLE();
+	__HAL_RCC_TIM4_CLK_ENABLE();
 
 	 gpio.Pin = GPIO_PIN_2;
 	 gpio.Mode =GPIO_MODE_AF_PP;
@@ -45,12 +45,13 @@ void GPIO_Init()
 	 HAL_GPIO_Init(GPIOB, &gpio);
 
 	 	 //TIM2
-//	 gpio.Mode = GPIO_MODE_OUTPUT_PP;
-//	 gpio.Pin = GPIO_PIN_5;
-//	 gpio.Pull = GPIO_NOPULL;
-//	 gpio.Speed = GPIO_SPEED_FREQ_LOW;
-//	 HAL_GPIO_Init(GPIOA, &gpio);
-//
+	 gpio.Mode = GPIO_MODE_OUTPUT_PP;
+	 gpio.Pin = GPIO_PIN_5;
+	 gpio.Pull = GPIO_NOPULL;
+	 gpio.Speed = GPIO_SPEED_FREQ_LOW;
+	 gpio.Alternate = GPIO_AF1_TIM1;
+	 HAL_GPIO_Init(GPIOA, &gpio);
+
 //	 	 //TIM4
 	 gpio.Pin = GPIO_PIN_12|GPIO_PIN_13;
 	 gpio.Mode = GPIO_MODE_AF_PP;
@@ -114,7 +115,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void TIM2_Init()
 {
 	htim2.Instance = TIM2;
-	htim2.Init.Prescaler = 8000-1;
+	htim2.Init.Prescaler = 10000-1;
 	htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
 	htim2.Init.Period = 999;
 	htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -127,32 +128,46 @@ void TIM2_Init()
 
 void TIM4_Init()
 {
+	  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+	  TIM_MasterConfigTypeDef sMasterConfig = {0};
+	  TIM_OC_InitTypeDef sConfigOC = {0};
+
 	 htim4.Instance = TIM4;
 	 htim4.Init.Period = 1000 - 1;
-	 htim4.Init.Prescaler = 8000 - 1;
-	 htim4.Init.ClockDivision = 0;
+	 htim4.Init.Prescaler = 10000 - 1;
+	 htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
 	 htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
 	 htim4.Init.RepetitionCounter = 0;
 	 htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-	 HAL_TIM_PWM_Init(&htim4);
 
-	 oc.OCMode = TIM_OCMODE_PWM1;
-	 oc.Pulse = 100;
-	 oc.OCPolarity = TIM_OCPOLARITY_HIGH;
-	 oc.OCNPolarity = TIM_OCNPOLARITY_LOW;
-	 oc.OCFastMode = TIM_OCFAST_ENABLE;
-	 oc.OCIdleState = TIM_OCIDLESTATE_SET;
-	 oc.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+	  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
+	  {
+	    Error_handler();
+	  }
+//		HAL_TIM_Base_Start_IT(&htim4);
+//		HAL_NVIC_EnableIRQ(TIM4_IRQn);
 
-	 if (HAL_TIM_PWM_ConfigChannel(&htim4, &oc, TIM_CHANNEL_1) != HAL_OK)
+	  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+	  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
 	  {
 	    Error_handler();
 	  }
 
-	 if (HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1) != HAL_OK)
+	 sConfigOC.OCMode = TIM_OCMODE_PWM1;
+	 sConfigOC.Pulse = 500;
+	 sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+	 sConfigOC.OCFastMode = TIM_OCFAST_ENABLE;
+
+	  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
 	  {
 	    Error_handler();
 	  }
+	  sConfigOC.Pulse = 199;
+	  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+	  {
+	    Error_handler();
+	  }
+
 }
 
 //void send_string(char* s)

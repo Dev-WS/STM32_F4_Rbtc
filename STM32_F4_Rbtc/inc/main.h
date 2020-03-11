@@ -21,6 +21,6 @@ UART_HandleTypeDef uart2;
 I2C_HandleTypeDef hi2c1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim4;
-TIM_OC_InitTypeDef oc;
+
 
 #endif
