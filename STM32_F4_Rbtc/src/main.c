@@ -41,7 +41,33 @@ int main(void)
 
 	int test = 0;
 	int n = 0;
+	int m = 0;
 	while(1){
+
+
+
+//		if (m == 0) send_string("Hello world!\r\n");
+//		else send_string("Hello world 2222!\r\n");
+//		m++;
+//		if (m > 1) m = 0;
+
+		//uint8_t test;
+		char buffer;
+		//receive_string(buffer);
+		if (__HAL_UART_GET_FLAG(&uart2, UART_FLAG_RXNE) == SET){
+
+		receive_string(&buffer);
+
+		HAL_UART_Receive(&uart2, &buffer, sizeof(buffer), 1000);
+		send_string(&buffer);
+		switch (buffer){
+		case 'woj':
+		send_string("AA\r\n");
+		break;
+		}
+		//send_string(&buffer);
+		//send_string("\r\n");
+		}
 
 		test++;
 //		if (test >= 1000) {
@@ -63,12 +89,12 @@ int main(void)
 //		SSD1306_Puts("Test@53.", &Font_7x10, 1);
 //		SSD1306_UpdateScreen(); //display
 
-		n++;
-		memset(msg,0,sizeof(msg));
-		sprintf(msg,"n = %d\r\n\n",n);
-		HAL_UART_Transmit(&uart2,(uint8_t*)msg,strlen(msg),HAL_MAX_DELAY);
-
-		if (n > 24000) n = 0;
+//		n++;
+//		memset(msg,0,sizeof(msg));
+//		sprintf(msg,"n = %d\r\n\n",n);
+//		HAL_UART_Transmit(&uart2,(uint8_t*)msg,strlen(msg),HAL_MAX_DELAY);
+//
+//		if (n > 24000) n = 0;
 		//SSD1306_Fill(0x01);
 		//HAL_Delay(1000);
 	}

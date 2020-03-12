@@ -16,6 +16,15 @@ void Error_handler(void)
 }
 
 
+void send_string(char* s)
+{
+	HAL_UART_Transmit(&uart2, (uint8_t*)s, strlen(s), 1000);
+}
+
+void receive_string(uint8_t* x){
+	HAL_UART_Receive(&uart2, x, sizeof(*x), 1000);
+}
+
 void GPIO_Init()
 {
 	__HAL_RCC_GPIOA_CLK_ENABLE();

@@ -12,8 +12,8 @@ void TIM2_Init();
 void TIM2_IRQHandler(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 void TIM4_Init();
-//void send_string(char* s);
-//void receive_string(uint8_t* x);
+void send_string(char* s);
+void receive_string(uint8_t* x);
 //void uart2_init();
 
 #endif
