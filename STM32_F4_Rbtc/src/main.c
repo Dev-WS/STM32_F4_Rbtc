@@ -7,6 +7,29 @@
 
 #include "main.h"
 
+
+typedef enum {FALSE = 0, TRUE = !FALSE} bool;
+unsigned char buforRx[17]={0};
+unsigned char bufRxIndex=0;
+bool getData=FALSE;
+unsigned char buforTx[20]={"Stan diod: ........\0"};
+unsigned char bufTxIndex=0;
+char *user_data = "The application is running\r\n";
+char *user_data2 = "The uart IT is running\r\n";
+
+
+
+uint8_t data_buffer[100];
+uint8_t recvd_data;
+uint32_t count=0;
+uint8_t reception_complete = FALSE;
+
+uint8_t duty_H1=499;
+uint8_t duty_H2=0;
+uint8_t m = 0x5A;
+uint8_t dataRS = 0x00;
+uint8_t multiple = 0x64;
+
 int main(void)
 {
 	char msg[100];
@@ -20,8 +43,12 @@ int main(void)
     TIM4_Init();
     SSD1306_Init();
 
+    HAL_TIM_Base_Start_IT(&htim4);
+
     HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
     HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);
+    HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
+    HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
 
     memset(msg,0,sizeof(msg));
 	sprintf(msg,"SYSCLK : %ldHz\r\n",HAL_RCC_GetSysClockFreq());
@@ -36,67 +63,42 @@ int main(void)
 	HAL_UART_Transmit(&uart2,(uint8_t*)msg,strlen(msg),HAL_MAX_DELAY);
 
 	memset(msg,0,sizeof(msg));
-	sprintf(msg,"PCLK2  : %ldHz\r\n\n",HAL_RCC_GetPCLK2Freq());
+	sprintf(msg,"PCLK2  : %ldHz\r\n",HAL_RCC_GetPCLK2Freq());
 	HAL_UART_Transmit(&uart2,(uint8_t*)msg,strlen(msg),HAL_MAX_DELAY);
 
-	int test = 0;
-	int n = 0;
-	int m = 0;
+//	int test = 0;
+//	int n = 0;
+
+//	uint8_t x;
+
+//	uint16_t len_of_data = strlen(user_data);
+//	uint16_t len_of_data2 = strlen(user_data2);
+//	HAL_UART_Transmit(&uart2,(uint8_t*)user_data,len_of_data,HAL_MAX_DELAY);
+//	HAL_UART_Transmit_IT(&uart2,(uint8_t*)user_data2,len_of_data2);
+
+//	HAL_UART_Transmit(&uart2,(uint8_t*)user_data, sizeof(user_data),HAL_MAX_DELAY);
+
+
+	//send_string("test!\r\n");
+
+//    while(reception_complete != TRUE)
+//    {
+//    	HAL_UART_Receive_IT(&uart2,&recvd_data,1);
+//    }
+
+	//
+
+	HAL_UART_Receive_IT(&uart2, &dataRS, 1);
+	HAL_UART_Transmit_IT(&uart2, &m, 1);
+
 	while(1){
 
-
-
-//		if (m == 0) send_string("Hello world!\r\n");
-//		else send_string("Hello world 2222!\r\n");
-//		m++;
-//		if (m > 1) m = 0;
-
-		//uint8_t test;
-		char buffer;
-		//receive_string(buffer);
-		if (__HAL_UART_GET_FLAG(&uart2, UART_FLAG_RXNE) == SET){
-
-		receive_string(&buffer);
-
-		HAL_UART_Receive(&uart2, &buffer, sizeof(buffer), 1000);
-		send_string(&buffer);
-		switch (buffer){
-		case 'woj':
-		send_string("AA\r\n");
-		break;
-		}
-		//send_string(&buffer);
-		//send_string("\r\n");
+		if(getData)
+		{
+			getData = FALSE;
+			HAL_UART_Transmit_IT(&uart2, buforRx, 20);
 		}
 
-		test++;
-//		if (test >= 1000) {
-//			SSD1306_Clear();
-//			SSD1306_GotoXY(10,27);
-//			SSD1306_Puts("Hellooo!", &Font_7x10, 1);
-//			SSD1306_UpdateScreen();
-//			HAL_Delay(100);
-//			test = 0;
-//		} else
-//		{
-//			SSD1306_Clear();
-//			SSD1306_GotoXY(10,27);
-//			SSD1306_Puts("Hi!", &Font_7x10, 1);
-//			SSD1306_UpdateScreen();
-//		}
-//
-//		SSD1306_GotoXY(10,52);
-//		SSD1306_Puts("Test@53.", &Font_7x10, 1);
-//		SSD1306_UpdateScreen(); //display
-
-//		n++;
-//		memset(msg,0,sizeof(msg));
-//		sprintf(msg,"n = %d\r\n\n",n);
-//		HAL_UART_Transmit(&uart2,(uint8_t*)msg,strlen(msg),HAL_MAX_DELAY);
-//
-//		if (n > 24000) n = 0;
-		//SSD1306_Fill(0x01);
-		//HAL_Delay(1000);
 	}
 
 
@@ -141,3 +143,60 @@ void SystemConfigClk()
     }
 
 }
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if (huart->Instance==USART2){
+
+//		if(buforRx[bufRxIndex] == 0x0D) { // detecting /CR
+//			  getData = TRUE;
+//
+//			   while (bufRxIndex<17) {
+//				buforRx[bufRxIndex]=0;
+//				bufRxIndex++;
+//			  }
+//			  bufRxIndex = 0;
+//			} else {
+//			  bufRxIndex++;
+//			  if (bufRxIndex>16) bufRxIndex=16;
+//
+//			}
+//			HAL_UART_Receive_IT(&uart2, &buforRx[bufRxIndex], 1);
+//
+
+//			duty_H1 = dataRS * multiple;
+//
+//			if (duty_H1 > 499) duty_H1 = 499;
+//			if (duty_H1 < 0) duty_H1 = 0;
+
+	}
+}
+
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if (huart->Instance==USART2){
+
+
+		HAL_UART_Transmit_IT(&uart2, &m, 1);
+	}
+
+
+}
+
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+//{
+//
+//	 if(recvd_data == '\r')
+//	 {
+//		 reception_complete = TRUE;
+//		 data_buffer[count++]='\r';
+//		 HAL_UART_Transmit(huart,data_buffer,count,HAL_MAX_DELAY);
+//	 }
+//	 else
+//	 {
+//		 data_buffer[count++] = recvd_data;
+//	 }
+//
+//
+//}

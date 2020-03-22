@@ -10,6 +10,10 @@ extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim4;
 extern TIM_OC_InitTypeDef oc;
 
+
+
+extern duty_H1;
+
 void Error_handler(void)
 {
 	while(1);
@@ -34,6 +38,10 @@ void GPIO_Init()
 	__HAL_RCC_I2C1_CLK_ENABLE();
 	__HAL_RCC_TIM2_CLK_ENABLE();
 	__HAL_RCC_TIM4_CLK_ENABLE();
+
+	HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
+
+
 
 	 gpio.Pin = GPIO_PIN_2;
 	 gpio.Mode =GPIO_MODE_AF_PP;
@@ -62,7 +70,7 @@ void GPIO_Init()
 	 HAL_GPIO_Init(GPIOA, &gpio);
 
 //	 	 //TIM4
-	 gpio.Pin = GPIO_PIN_12|GPIO_PIN_13;
+	 gpio.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
 	 gpio.Mode = GPIO_MODE_AF_PP;
 	 gpio.Pull = GPIO_NOPULL;
 	 gpio.Speed = GPIO_SPEED_FREQ_HIGH;
@@ -73,9 +81,6 @@ void GPIO_Init()
 
 void UART2_Init()
 {
-	HAL_NVIC_EnableIRQ(USART2_IRQn);
-	HAL_NVIC_SetPriority(USART2_IRQn,15,0);
-
 	uart2.Instance = USART2;
 	uart2.Init.BaudRate = 115200;
 	uart2.Init.WordLength = UART_WORDLENGTH_8B;
@@ -87,6 +92,9 @@ void UART2_Init()
 	 {
 	 	Error_handler();
 	 }
+
+	 HAL_NVIC_EnableIRQ(USART2_IRQn);
+	 HAL_NVIC_SetPriority(USART2_IRQn, 1, 0);
 }
 
 void I2C1_Init()
@@ -113,12 +121,27 @@ void TIM2_IRQHandler(void)
   HAL_TIM_IRQHandler(&htim2);
 }
 
+void TIM4_IRQHandler(void)
+{
+  HAL_TIM_IRQHandler(&htim4);
+}
+
+void USART2_IRQHandler(void)
+{
+	HAL_UART_IRQHandler(&uart2);
+
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
  if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5) == GPIO_PIN_RESET)
  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
  else
  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+
+
+ duty_H1 = 300;
+
 }
 
 void TIM2_Init()
@@ -163,7 +186,7 @@ void TIM4_Init()
 	  }
 
 	 sConfigOC.OCMode = TIM_OCMODE_PWM1;
-	 sConfigOC.Pulse = 500;
+	 sConfigOC.Pulse = 499;
 	 sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
 	 sConfigOC.OCFastMode = TIM_OCFAST_ENABLE;
 
@@ -171,13 +194,29 @@ void TIM4_Init()
 	  {
 	    Error_handler();
 	  }
-	  sConfigOC.Pulse = 199;
+	  sConfigOC.Pulse = duty_H1;
 	  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
 	  {
 	    Error_handler();
 	  }
+	  sConfigOC.Pulse = duty_H1;
+	  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
+	  {
+	    Error_handler();
+	  }
+	  sConfigOC.Pulse = 199;
+	  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+	  {
+	    Error_handler();
+	  }
+	  HAL_NVIC_SetPriority( TIM4_IRQn, 0, 0);
+	  HAL_NVIC_EnableIRQ( TIM4_IRQn );
+
+	  HAL_TIM_GenerateEvent( &htim4, TIM_EVENTSOURCE_UPDATE );
+	  HAL_TIM_GenerateEvent( &htim4, TIM_EVENTSOURCE_CC1 );
 
 }
+
 
 //void send_string(char* s)
 //{
