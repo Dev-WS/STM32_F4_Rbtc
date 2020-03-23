@@ -24,8 +24,6 @@ uint8_t recvd_data;
 uint32_t count=0;
 uint8_t reception_complete = FALSE;
 
-uint8_t duty_H1=499;
-uint8_t duty_H2=0;
 uint8_t m = 0x5A;
 uint8_t dataRS = 0x00;
 uint8_t multiple = 0x64;
@@ -97,6 +95,7 @@ int main(void)
 		{
 			getData = FALSE;
 			HAL_UART_Transmit_IT(&uart2, buforRx, 20);
+
 		}
 
 	}

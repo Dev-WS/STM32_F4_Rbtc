@@ -12,7 +12,8 @@ extern TIM_OC_InitTypeDef oc;
 
 
 
-extern duty_H1;
+uint16_t duty_H1=499;
+uint16_t duty_H2=0;
 
 void Error_handler(void)
 {
@@ -139,8 +140,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  else
  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
 
-
- duty_H1 = 300;
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, duty_H1);
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3, duty_H1);
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_4, duty_H1);
 
 }
 
