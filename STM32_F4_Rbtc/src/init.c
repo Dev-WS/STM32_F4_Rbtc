@@ -12,8 +12,8 @@ extern TIM_OC_InitTypeDef oc;
 
 
 
-uint16_t duty_H1=499;
-uint16_t duty_H2=0;
+extern duty_H1;
+extern duty_H2;
 
 void Error_handler(void)
 {
@@ -219,12 +219,3 @@ void TIM4_Init()
 
 }
 
-
-//void send_string(char* s)
-//{
-//	HAL_UART_Transmit(&uart2, (uint8_t*)s, strlen(s), 1000);
-//}
-//
-//void receive_string(uint8_t* x){
-//	HAL_UART_Receive(&uart2, x, sizeof(*x), 1000);
-//}
