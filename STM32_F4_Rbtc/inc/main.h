@@ -11,6 +11,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "init.h"
+#include "state_machine.h"
 #include "ssd1306.h"
 
 

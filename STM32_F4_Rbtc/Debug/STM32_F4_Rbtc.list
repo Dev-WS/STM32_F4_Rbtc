@@ -31,13 +31,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  13 .debug_macro  00003e99  00000000  00000000  00033ae0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_line   0000e2bd  00000000  00000000  00037979  2**0
+ 14 .debug_line   0000e2b9  00000000  00000000  00037979  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_str    000ed572  00000000  00000000  00045c36  2**0
+ 15 .debug_str    000ed572  00000000  00000000  00045c32  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .comment      0000007b  00000000  00000000  001331a8  2**0
+ 16 .comment      0000007b  00000000  00000000  001331a4  2**0
                   CONTENTS, READONLY
- 17 .debug_frame  0000472c  00000000  00000000  00133224  2**2
+ 17 .debug_frame  0000472c  00000000  00000000  00133220  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -10144,9 +10144,9 @@ void GPIO_Init()
  80041a2:	4b1e      	ldr	r3, [pc, #120]	; (800421c <GPIO_Init+0x18c>)
  80041a4:	2212      	movs	r2, #18
  80041a6:	605a      	str	r2, [r3, #4]
-	 gpio.Pull = GPIO_NOPULL;
+	 gpio.Pull = GPIO_PULLUP;
  80041a8:	4b1c      	ldr	r3, [pc, #112]	; (800421c <GPIO_Init+0x18c>)
- 80041aa:	2200      	movs	r2, #0
+ 80041aa:	2201      	movs	r2, #1
  80041ac:	609a      	str	r2, [r3, #8]
 	 gpio.Speed = GPIO_SPEED_FREQ_HIGH;
  80041ae:	4b1b      	ldr	r3, [pc, #108]	; (800421c <GPIO_Init+0x18c>)
@@ -10293,7 +10293,7 @@ void I2C1_Init()
  800428c:	4b12      	ldr	r3, [pc, #72]	; (80042d8 <I2C1_Init+0x50>)
  800428e:	4a13      	ldr	r2, [pc, #76]	; (80042dc <I2C1_Init+0x54>)
  8004290:	601a      	str	r2, [r3, #0]
-	hi2c1.Init.ClockSpeed = 300000;
+	hi2c1.Init.ClockSpeed = 100000;
  8004292:	4b11      	ldr	r3, [pc, #68]	; (80042d8 <I2C1_Init+0x50>)
  8004294:	4a12      	ldr	r2, [pc, #72]	; (80042e0 <I2C1_Init+0x58>)
  8004296:	605a      	str	r2, [r3, #4]
@@ -10341,7 +10341,7 @@ void I2C1_Init()
  80042d6:	bd80      	pop	{r7, pc}
  80042d8:	20000528 	.word	0x20000528
  80042dc:	40005400 	.word	0x40005400
- 80042e0:	000493e0 	.word	0x000493e0
+ 80042e0:	000186a0 	.word	0x000186a0
 
 080042e4 <TIM2_IRQHandler>:
 
@@ -10833,9 +10833,6 @@ int main(void)
  800461e:	4820      	ldr	r0, [pc, #128]	; (80046a0 <main+0x198>)
  8004620:	f7fe ff82 	bl	8003528 <HAL_UART_Transmit>
 
-	//
-
-
 
 	HAL_UART_Receive_IT(&uart2, &dataRS, 1);
  8004624:	2201      	movs	r2, #1
@@ -10849,8 +10846,8 @@ int main(void)
  8004634:	f7ff f811 	bl	800365a <HAL_UART_Transmit_IT>
 	while(1){
 
-		//duty_H1 = (uint16_t)dataRS;
-		//duty_H1 = dataRS;
+
+
 
 		if (dataRS > 100) dataRS = 100;
  8004638:	4b1d      	ldr	r3, [pc, #116]	; (80046b0 <main+0x1a8>)
@@ -11052,18 +11049,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
  80047a4:	4a05      	ldr	r2, [pc, #20]	; (80047bc <HAL_UART_RxCpltCallback+0x24>)
  80047a6:	4293      	cmp	r3, r2
  80047a8:	d104      	bne.n	80047b4 <HAL_UART_RxCpltCallback+0x1c>
-//			  if (bufRxIndex>16) bufRxIndex=16;
-//
-//			}
-//			HAL_UART_Receive_IT(&uart2, &buforRx[bufRxIndex], 1);
-//
+
 		HAL_UART_Receive_IT(&uart2, &dataRS, 1);
  80047aa:	2201      	movs	r2, #1
  80047ac:	4904      	ldr	r1, [pc, #16]	; (80047c0 <HAL_UART_RxCpltCallback+0x28>)
  80047ae:	4805      	ldr	r0, [pc, #20]	; (80047c4 <HAL_UART_RxCpltCallback+0x2c>)
  80047b0:	f7fe ff98 	bl	80036e4 <HAL_UART_Receive_IT>
-//			if (duty_H1 > 499) duty_H1 = 499;
-//			if (duty_H1 < 0) duty_H1 = 0;
 
 	}
 
@@ -11092,8 +11083,6 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
  80047d6:	4293      	cmp	r3, r2
  80047d8:	d104      	bne.n	80047e4 <HAL_UART_TxCpltCallback+0x1c>
 
-
-		//HAL_UART_Transmit_IT(&uart2, &m, 1);
 		HAL_UART_Transmit_IT(&uart2, &dataRS, 1);
  80047da:	2201      	movs	r2, #1
  80047dc:	4904      	ldr	r1, [pc, #16]	; (80047f0 <HAL_UART_TxCpltCallback+0x28>)

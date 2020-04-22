@@ -18497,7 +18497,7 @@ OUTPUT(STM32_F4_Rbtc.elf elf32-littlearm)
  .debug_macro   0x0000000000003ab6       0x88 src/syscalls.o
  .debug_macro   0x0000000000003b3e      0x35b src/system_stm32f4xx.o
 
-.debug_line     0x0000000000000000     0xe2bd
+.debug_line     0x0000000000000000     0xe2b9
  .debug_line    0x0000000000000000      0xc0e HAL_Driver/Src/stm32f4xx_hal.o
  .debug_line    0x0000000000000c0e      0xd36 HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .debug_line    0x0000000000001944      0xce1 HAL_Driver/Src/stm32f4xx_hal_dma.o
@@ -18508,12 +18508,12 @@ OUTPUT(STM32_F4_Rbtc.elf elf32-littlearm)
  .debug_line    0x00000000000078c9     0x1016 HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
  .debug_line    0x00000000000088df     0x1309 HAL_Driver/Src/stm32f4xx_hal_uart.o
  .debug_line    0x0000000000009be8      0xd07 src/init.o
- .debug_line    0x000000000000a8ef      0xd4a src/main.o
- .debug_line    0x000000000000b639     0x1033 src/ssd1306.o
- .debug_line    0x000000000000c66c      0xa43 src/stm32f4xx_it.o
- .debug_line    0x000000000000d0af      0x756 src/syscalls.o
- .debug_line    0x000000000000d805      0xa39 src/system_stm32f4xx.o
- .debug_line    0x000000000000e23e       0x7f startup/startup_stm32f407xx.o
+ .debug_line    0x000000000000a8ef      0xd46 src/main.o
+ .debug_line    0x000000000000b635     0x1033 src/ssd1306.o
+ .debug_line    0x000000000000c668      0xa43 src/stm32f4xx_it.o
+ .debug_line    0x000000000000d0ab      0x756 src/syscalls.o
+ .debug_line    0x000000000000d801      0xa39 src/system_stm32f4xx.o
+ .debug_line    0x000000000000e23a       0x7f startup/startup_stm32f407xx.o
 
 .debug_str      0x0000000000000000    0xed572
  .debug_str     0x0000000000000000    0xe3756 HAL_Driver/Src/stm32f4xx_hal.o

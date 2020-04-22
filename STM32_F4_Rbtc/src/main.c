@@ -73,6 +73,8 @@ int main(void)
 	while(1){
 
 
+
+
 		if (dataRS > 100) dataRS = 100;
 		if (dataRS < 0) dataRS = 0;
 
