@@ -34,6 +34,8 @@ int main(void)
 {
 	char msg[100];
 
+	//(*state_update)() = state_idle;
+
 	HAL_Init();
 	SystemConfigClk();
 	GPIO_Init();
@@ -71,7 +73,7 @@ int main(void)
 	HAL_UART_Transmit_IT(&uart2, &dataRS, 1);
 
 	while(1){
-
+		(*state_update)();
 
 
 
