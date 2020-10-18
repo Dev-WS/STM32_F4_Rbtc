@@ -29,10 +29,16 @@ uint8_t reception_complete = FALSE;
 uint8_t m = 0x5A;
 uint8_t dataRS = 0x00;
 uint8_t multiple = 0x64;
+char msg[100];
+char tablica[100] = "test1";
+char tablica2[100] = "test2";
+
+
+void *array_ptr;
 
 int main(void)
 {
-	char msg[100];
+
 
 	//(*state_update)() = state_idle;
 
@@ -72,15 +78,23 @@ int main(void)
 	HAL_UART_Receive_IT(&uart2, &dataRS, 1);
 	HAL_UART_Transmit_IT(&uart2, &dataRS, 1);
 
+
+	array_ptr = &tablica;
+
+
 	while(1){
-		(*state_update)();
+		//(*state_update)();
 
 
 
-		if (dataRS > 100) dataRS = 100;
-		if (dataRS < 0) dataRS = 0;
+//		if (dataRS > 100) dataRS = 100;
+//		if (dataRS < 0) dataRS = 0;
+//
+//		duty_H1 = (dataRS*0.01)*999;
 
-		duty_H1 = (dataRS*0.01)*999;
+		array_ptr = &tablica2;
+
+//		dataRS = (uint8_t)tablica;
 
 	}
 
@@ -142,7 +156,8 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if (huart->Instance==USART2){
 
-		HAL_UART_Transmit_IT(&uart2, &dataRS, 1);
+		HAL_UART_Transmit_IT(&uart2,(uint8_t*)array_ptr,strlen(array_ptr));
+
 	}
 
 }

@@ -95,7 +95,7 @@ void UART2_Init()
 	 }
 
 	 HAL_NVIC_EnableIRQ(USART2_IRQn);
-	 HAL_NVIC_SetPriority(USART2_IRQn, 1, 0);
+	 HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);
 }
 
 void I2C1_Init()
@@ -129,7 +129,7 @@ void TIM4_IRQHandler(void)
 
 void USART2_IRQHandler(void)
 {
-	HAL_UART_IRQHandler(&uart2);
+ HAL_UART_IRQHandler(&uart2);
 
 }
 
