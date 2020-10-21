@@ -27,11 +27,12 @@ uint32_t count=0;
 uint8_t reception_complete = FALSE;
 
 uint8_t m = 0x5A;
-uint8_t dataRS = 0x00;
+uint8_t dataRX = 0x00;
+uint8_t dataTX = 0x00;
 uint8_t multiple = 0x64;
 char msg[100];
 char tablica[100] = "test1";
-char tablica2[100] = "test2";
+char tablica2[100] = "test2\n";
 
 
 void *array_ptr;
@@ -58,6 +59,20 @@ int main(void)
     HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
     HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
 
+
+
+
+	SSD1306_Init();
+	SSD1306_GotoXY(10,27);
+	SSD1306_Puts("Test_1", &Font_7x10, 1);
+	SSD1306_GotoXY(10,52);
+	SSD1306_Puts("Test_2", &Font_7x10, 1);
+	SSD1306_UpdateScreen(); //display
+	SSD1306_Fill(0x00);
+	HAL_Delay(1000);
+
+
+
     memset(msg,0,sizeof(msg));
 	sprintf(msg,"SYSCLK : %ldHz\r\n",HAL_RCC_GetSysClockFreq());
 	HAL_UART_Transmit(&uart2,(uint8_t*)msg,strlen(msg),HAL_MAX_DELAY);
@@ -75,8 +90,8 @@ int main(void)
 	HAL_UART_Transmit(&uart2,(uint8_t*)msg,strlen(msg),HAL_MAX_DELAY);
 
 
-	HAL_UART_Receive_IT(&uart2, &dataRS, 1);
-	HAL_UART_Transmit_IT(&uart2, &dataRS, 1);
+	HAL_UART_Receive_IT(&uart2, &dataRX, 1);
+	HAL_UART_Transmit_IT(&uart2, &dataTX, 1);
 
 
 	array_ptr = &tablica;
@@ -93,6 +108,26 @@ int main(void)
 //		duty_H1 = (dataRS*0.01)*999;
 
 		array_ptr = &tablica2;
+
+		dataTX = array_ptr;
+
+
+
+		if (dataRX == 1U){
+
+			SSD1306_GotoXY(10,52);
+			SSD1306_Puts("Read 1", &Font_7x10, 1);
+			SSD1306_UpdateScreen(); //display
+			SSD1306_Fill(0x00);
+
+		} else {
+
+			SSD1306_GotoXY(10,52);
+			SSD1306_Puts("Read =/= 1", &Font_7x10, 1);
+			SSD1306_UpdateScreen(); //display
+			SSD1306_Fill(0x00);
+		}
+
 
 //		dataRS = (uint8_t)tablica;
 
@@ -145,7 +180,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if (huart->Instance==USART2){
 
-		HAL_UART_Receive_IT(&uart2, &dataRS, 1);
+		HAL_UART_Receive_IT(&uart2, &dataRX, 1);
 
 	}
 
@@ -156,7 +191,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if (huart->Instance==USART2){
 
-		HAL_UART_Transmit_IT(&uart2,(uint8_t*)array_ptr,strlen(array_ptr));
+		HAL_UART_Transmit_IT(&uart2,(uint8_t*)dataRX,strlen(dataRX));
 
 	}
 
