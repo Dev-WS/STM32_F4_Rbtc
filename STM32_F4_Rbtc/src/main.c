@@ -34,8 +34,8 @@ char msg[100];
 char tablica[100] = "test1";
 char tablica2[100] = "test2\n";
 
-
 void *array_ptr;
+
 
 int main(void)
 {
@@ -196,3 +196,5 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 	}
 
 }
+
+

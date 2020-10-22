@@ -45,8 +45,8 @@ SCL        |PB6          |Serial clock line
 SDA        |PB7          |Serial data line
  */
 
-#include "stm32f4xx_hal.h"
 
+#include "stm32f4xx_hal.h"
 #include "fonts.h"
 
 #include "stdlib.h"

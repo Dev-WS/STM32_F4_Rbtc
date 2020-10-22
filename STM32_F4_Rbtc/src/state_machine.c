@@ -1,41 +1,30 @@
 
-#include "state_machine.h"
-
-//typedef enum {STATE_OFF, STATE_RUN, STATE_ERROR, NUM_STATES} state_t;
-//typedef struct instance_data instance_data_t;
-//typedef state_t state_func_t(instance_data_t *data);
-//
-//
-//state_t do_off_to_run(instance_data_t *data);
-//state_t do_run_to_err(instance_data_t *data);
-//state_t do_err_to_off(instance_data_t *data);
-//
-
-//void state_idle();
-//void state_start();
-//void state_stop();
-//void (*state_update)();
+//#include "state_machine.h"
+#include "main.h"
 
 
 void state_idle(){
 
-
-
-	state_update = state_start;
-
 };
 void state_start(){
-
-
-
-
-
-	state_update = state_stop;
 
 };
 void state_stop(){
 
-
-
-	state_update = state_idle;
 };
+
+const state_machine_t state_machine[] = {
+		{IDLE_STATE, &state_idle},
+		{RUNNING_STATE, &state_running},
+		{ERROR_STATE, &state_error},
+		{STOP_STATE, &state_stop}
+};
+
+
+void state_check(){
+
+	state_machine[Machine.state_t].state_machine_fun();
+
+}
+
+

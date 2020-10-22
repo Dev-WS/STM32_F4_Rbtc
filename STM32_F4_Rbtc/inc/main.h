@@ -4,12 +4,13 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <string.h>
+#include <stdio.h>
+#include <stdint.h>
 
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx.h"
 #include "stm32f4_discovery.h"
-#include <string.h>
-#include <stdio.h>
 #include "init.h"
 #include "state_machine.h"
 #include "ssd1306.h"
