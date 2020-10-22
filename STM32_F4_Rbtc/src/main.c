@@ -31,18 +31,14 @@ uint8_t dataRX = 0x00;
 uint8_t dataTX = 0x00;
 uint8_t multiple = 0x64;
 char msg[100];
-char tablica[100] = "test1";
-char tablica2[100] = "test2\n";
+char array[100] = "test1";
+char array2[100] = "test2\n";
 
 void *array_ptr;
 
 
 int main(void)
 {
-
-
-	//(*state_update)() = state_idle;
-
 	HAL_Init();
 	SystemConfigClk();
 	GPIO_Init();
@@ -59,9 +55,6 @@ int main(void)
     HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
     HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
 
-
-
-
 	SSD1306_Init();
 	SSD1306_GotoXY(10,27);
 	SSD1306_Puts("Test_1", &Font_7x10, 1);
@@ -70,8 +63,6 @@ int main(void)
 	SSD1306_UpdateScreen(); //display
 	SSD1306_Fill(0x00);
 	HAL_Delay(1000);
-
-
 
     memset(msg,0,sizeof(msg));
 	sprintf(msg,"SYSCLK : %ldHz\r\n",HAL_RCC_GetSysClockFreq());
@@ -94,42 +85,23 @@ int main(void)
 	HAL_UART_Transmit_IT(&uart2, &dataTX, 1);
 
 
-	array_ptr = &tablica;
+	array_ptr = &array;
 
 
 	while(1){
-		//(*state_update)();
-
-
 
 //		if (dataRS > 100) dataRS = 100;
 //		if (dataRS < 0) dataRS = 0;
 //
 //		duty_H1 = (dataRS*0.01)*999;
 
-		array_ptr = &tablica2;
-
+		array_ptr = &array2;
 		dataTX = array_ptr;
 
+		Machine.state_t = dataRX;
+		if (Machine.state_t > 3U) Machine.state_t = 3U;
 
-
-		if (dataRX == 1U){
-
-			SSD1306_GotoXY(10,52);
-			SSD1306_Puts("Read 1", &Font_7x10, 1);
-			SSD1306_UpdateScreen(); //display
-			SSD1306_Fill(0x00);
-
-		} else {
-
-			SSD1306_GotoXY(10,52);
-			SSD1306_Puts("Read =/= 1", &Font_7x10, 1);
-			SSD1306_UpdateScreen(); //display
-			SSD1306_Fill(0x00);
-		}
-
-
-//		dataRS = (uint8_t)tablica;
+		state_check();
 
 	}
 

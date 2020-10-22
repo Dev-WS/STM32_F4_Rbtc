@@ -14,7 +14,7 @@ typedef uint16_t state_id;
 
 enum{
 
-	IDLE_STATE,
+	IDLE_STATE = 0,
 	RUNNING_STATE,
 	ERROR_STATE,
 	STOP_STATE
